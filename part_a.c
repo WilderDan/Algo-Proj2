@@ -11,18 +11,30 @@
  
  #include "array_utilities.h"
  #include "sort_algorithms.h"
+ #include <stdlib.h>
+ #include <time.h>
+ 
+ #define SIZE    30
+ #define MIN_VAL 1
+ #define MAX_VAL 9999
  
  int main() {
      
-     // TESTING mergeSort
+     int arr[SIZE];
      
-     int A[20];
+     srand(time(NULL));
+
+     printf("TESTING mergeSort...\n");
+     randomInitialize(arr, SIZE, MIN_VAL, MAX_VAL);
+     fprintArray(stdout, arr, SIZE);
+     mergeSort(arr, 0, SIZE - 1);
+     fprintArray(stdout, arr, SIZE);
      
-     randomInitialize(A, 20, 1, 9999);
-     fprintArray(stdout, A, 20);
-     
-     mergeSort(A, 0, 19);
-     fprintArray(stdout, A, 20);
+     printf("TESTING quickSort...\n");
+     randomInitialize(arr, SIZE, MIN_VAL, MAX_VAL);
+     fprintArray(stdout, arr, SIZE);
+     quickSort(arr, 0, SIZE - 1);
+     fprintArray(stdout, arr, SIZE);
      
      return 0;
  }

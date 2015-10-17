@@ -9,56 +9,93 @@
  *      Implements sorting algorithms.
  */
 
+#include "sort_algorithms.h"
 #include <math.h>
 #include <limits.h>
-#include "sort_algorithms.h"
 
-void merge(int *A, int p, int q, int r) {
+void swap(int *, int *);
+void merge(int *arr, int lo, int mid, int hi);
+int  partition(int *arr, int lo, int hi);
+
+void mergeSort(int *arr, int lo, int hi) {
+    
+    int mid;
+    
+    if (lo < hi) {
+        mid = floor( (lo + hi) / 2 );
+        
+        mergeSort(arr, lo, mid);
+        mergeSort(arr, mid + 1, hi);
+        
+        merge(arr, lo, mid, hi);
+    }
+}
+
+void merge(int *arr, int lo, int mid, int hi) {
 
     int i, j, k;
-    int n1 = q - p + 1;
-    int n2 = r - q;
+    int numL = mid - lo + 1;
+    int numR = hi - mid;
     
-    int L[n1 + 1];
-    int R[n2 + 1];
+    int left[numL + 1];
+    int right[numR + 1];
 
     // Initialize new subarrays    
-    for (i = 0; i < n1; ++i)
-        L[i] = A[p + i];
+    for (i = 0; i < numL; ++i)
+        left[i] = arr[lo + i];
         
-    for (j = 0; j < n2; ++j)
-        R[j] = A[q + j + 1];
+    for (j = 0; j < numR; ++j)
+        right[j] = arr[mid + j + 1];
         
     // Sentinel Values
-    L[n1] = INT_MAX;
-    R[n2] = INT_MAX;
+    left[numL] = INT_MAX;
+    right[numR] = INT_MAX;
     
-    
-    // Combine
     i = j = 0;
-    
-    for (k = p; k <= r; ++k) {
+    for (k = lo; k <= hi; ++k) {
         
-        if (L[i] < R[j]) {
-            A[k] = L[i];
+        if (left[i] < right[j]) {
+            arr[k] = left[i];
             ++i;
         }
         
         else {
-            A[k] = R[j];
+            arr[k] = right[j];
             ++j;
         }
     }
 }
 
-void mergeSort(int *A, int p, int r) {
+void quickSort(int *arr, int lo, int hi) {
     
-    int q;
+    int p;
     
-    if (p < r) {
-        q = floor( (p+r) / 2 );
-        mergeSort(A, p, q);
-        mergeSort(A, q+1, r);
-        merge(A, p, q, r);
+    if (lo < hi) {
+        p = partition(arr, lo, hi);
+        quickSort(arr, lo, p - 1);
+        quickSort(arr, p + 1, hi);
     }
+}
+
+int partition(int *arr, int lo, int hi) {
+    
+    int pivot = arr[hi];
+    int i = lo;
+    int j;
+    
+    for(j = lo; j < hi; ++j) {
+        if (arr[j] <= pivot) {
+            swap(arr + i, arr + j);
+            ++i;
+        }
+    }
+    
+    swap(arr + i, arr + hi);
+    return i;
+}
+
+void swap(int *x, int *y) {
+  int temp = *x;
+  *x = *y;
+  *y = temp;
 }
