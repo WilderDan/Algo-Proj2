@@ -13,12 +13,11 @@
 #include <math.h>
 #include <limits.h>
 
-void swap(int *, int *);
+void swap(int *x, int *y);
 void merge(int *arr, int lo, int mid, int hi);
 int  partition(int *arr, int lo, int hi);
 
 void mergeSort(int *arr, int lo, int hi) {
-    
     int mid;
     
     if (lo < hi) {
@@ -32,7 +31,6 @@ void mergeSort(int *arr, int lo, int hi) {
 }
 
 void merge(int *arr, int lo, int mid, int hi) {
-
     int i, j, k;
     int numL = mid - lo + 1;
     int numR = hi - mid;
@@ -67,7 +65,6 @@ void merge(int *arr, int lo, int mid, int hi) {
 }
 
 void quickSort(int *arr, int lo, int hi) {
-    
     int p;
     
     if (lo < hi) {
@@ -78,7 +75,6 @@ void quickSort(int *arr, int lo, int hi) {
 }
 
 int partition(int *arr, int lo, int hi) {
-    
     int pivot = arr[hi];
     int i = lo;
     int j;
