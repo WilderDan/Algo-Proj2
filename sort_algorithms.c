@@ -10,6 +10,7 @@
  */
 
 #include <math.h>
+#include <limits.h>
 #include "sort_algorithms.h"
 
 void merge(int *A, int p, int q, int r) {
@@ -29,8 +30,8 @@ void merge(int *A, int p, int q, int r) {
         R[j] = A[q + j + 1];
         
     // Sentinel Values
-    L[n1] = MAX_VAL + 1;
-    R[n2] = MAX_VAL + 1;
+    L[n1] = INT_MAX;
+    R[n2] = INT_MAX;
     
     
     // Combine

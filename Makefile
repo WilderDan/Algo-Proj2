@@ -1,3 +1,13 @@
+#	Dan Wilder
+#	
+#	University of Missouri - St. Louis
+#	CS 3130 - Design & Analysis of Algorithms
+#	Galina Piatnitskiaia (instructor)
+#	Project #2
+#	
+#	Makefile
+
+ 
 CC=gcc
 CFLAGS=-g -Wall
 

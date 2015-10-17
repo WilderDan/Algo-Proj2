@@ -12,8 +12,6 @@
 #ifndef SORT_ALGORITHMS_H
 #define SORT_ALGORITHMS_H
 
-#define MAX_VAL 9999
-
 void mergeSort(int *, int, int);
 
 #endif
