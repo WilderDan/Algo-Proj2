@@ -40,7 +40,7 @@ int main() {
     randomInitialize(A, SIZE_BIGGER, MIN_VAL, MAX_VAL);
     fprintArray(stdout, A, SIZE_BIGGER);
      
-    printf("mergeSort...\n");
+    printf("\nmergeSort...\n");
     mergeSort(A, 0, SIZE_BIGGER - 1);
     fprintArray(stdout, A, SIZE_BIGGER);
     
@@ -67,10 +67,10 @@ int main() {
     readArrayFile(fpSmall, B, SIZE_SMALLER);
     fclose(fpSmall);
     
-    printf("Bigger sorted file contents:\n");
+    printf("\nBigger sorted file contents:\n");
     fprintArray(stdout, A, SIZE_BIGGER);
     
-    printf("Smaller unsorted file contents:\n");
+    printf("\nSmaller unsorted file contents:\n");
     fprintArray(stdout, B, SIZE_SMALLER);
     
     return 0;
