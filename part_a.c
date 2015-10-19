@@ -27,12 +27,15 @@
 #define FILE_SMALLER        "smaller_file"
 #define SIZE_SMALLER        10
  
+#define NUM_TRIALS          10
+
 const int N_SIZES[] = {50, 250, 1250};
 const int M_SIZES[] = {25, 50, 100};
 
 void demoMergeSort();
 void demoFileMerge();
-void mergeArrays(int dest[], int srcA[], int sizeA, int srcB[], int sizeB);
+void sortThenMerge(int dest[], int srcA[], int sizeA, int srcB[], int sizeB);
+void experiment(char *, void (*)(int [], int [], int, int [], int) );
  
 int main() {
     
@@ -40,6 +43,9 @@ int main() {
     
     demoMergeSort();
     demoFileMerge();
+    
+    experiment("Sort then Merge", sortThenMerge);
+    //experiment(appendThenSort);
 
     return 0;
  }
@@ -54,7 +60,7 @@ void demoMergeSort() {
     printf("\nMerge Sort:\n");
     mergeSort(arr, 0, SIZE_DEMO - 1);
     fprintArray(stdout, arr, SIZE_DEMO);
- }
+}
  
 void demoFileMerge() {
     const int SIZE_MERGE = SIZE_BIGGER + SIZE_SMALLER;
@@ -92,20 +98,83 @@ void demoFileMerge() {
     printf("\nSmaller unsorted file contents:\n");
     fprintArray(stdout, B, SIZE_SMALLER);
     
-    printf("\nSorted smaller file:\n");
-    mergeSort(B, 0, SIZE_SMALLER - 1);
-    fprintArray(stdout, B, SIZE_SMALLER);
+    sortThenMerge(C, A, SIZE_BIGGER, B, SIZE_SMALLER);
     
-    mergeArrays(C, A, SIZE_BIGGER, B, SIZE_SMALLER);
+    printf("\nSorted smaller file:\n");
+    fprintArray(stdout, B, SIZE_SMALLER);
     
     printf("\nMerged file:\n");
     fprintArray(stdout, C, SIZE_MERGE);
- }
+}
  
-void mergeArrays(int dest[], int srcA[], int sizeA, int srcB[], int sizeB) {
+void sortThenMerge(int dest[], int srcA[], int sizeA, int srcB[], int sizeB) {
+/*  ASSUME srcA is sorted. Sort srcB. Merge arrays into dest.
+ */
     int sizeDest = sizeA + sizeB;
+    
+    mergeSort(srcB, 0, sizeB - 1);
     
     copyArray(dest, srcA, sizeA, 0);
     copyArray(dest, srcB, sizeB, sizeA);
     merge(dest, 0, sizeA - 1, sizeDest - 1);
- }
+}
+ 
+void experiment(char *tag, void (*func)(int [], int [], int, int [], int)) {
+    int numN = sizeof(N_SIZES)/sizeof(N_SIZES[0]);
+    int numM = sizeof(M_SIZES)/sizeof(M_SIZES[0]);
+    int sizeDest;
+    int i, j, k;
+     
+    int *arrN[NUM_TRIALS];
+    int *arrM[NUM_TRIALS];
+    int *arrDest[NUM_TRIALS];
+     
+    clock_t start, end;
+    double average;
+    
+    printf("\nExperiment: %s\n", tag);
+
+    // For each size combination
+    for (i = 0; i < numN; ++i) {
+        for (j = 0; j < numM; ++j) {
+             
+            // Allocate and initialize sample arrays
+            for (k = 0; k < NUM_TRIALS; ++k) {
+                arrN[k] = (int *) malloc(N_SIZES[i] * sizeof(int));
+                arrM[k] = (int *) malloc(M_SIZES[j] * sizeof(int));
+                
+                sizeDest = N_SIZES[i] + M_SIZES[j];
+                arrDest[k] = (int *) malloc(sizeDest * sizeof(int));
+                
+                // Experiment assumes array of size N is sorted
+                randomInitialize(arrN[k], N_SIZES[i], MIN_VAL, MAX_VAL);
+                mergeSort(arrN[k], 0, N_SIZES[i] - 1);
+                
+                randomInitialize(arrM[k], M_SIZES[j], MIN_VAL, MAX_VAL);
+            }
+             
+            // Start timer
+            start = clock();
+             
+            // Run test NUM_TRIALS times
+            for (k = 0; k < NUM_TRIALS; ++k) {
+                (*func)(arrDest[k], arrN[k], N_SIZES[i], arrM[k], M_SIZES[j]);
+            }
+             
+            // Stop timer and get average time   
+            end = clock();
+            average = ((end - start) / (double) CLOCKS_PER_SEC) / NUM_TRIALS;  
+            
+            // Free memory
+            for (k = 0; k < NUM_TRIALS; ++k) {
+                free(arrN[k]);
+                free(arrM[k]);
+                free(arrDest[k]);
+            }
+            
+            // Print results
+            printf("\n\tArray sizes %d and %d:\n", N_SIZES[i], M_SIZES[j]);
+            printf("\t\tAverage CPU execution time: %lf msecs\n", average*1000);
+        }
+    }
+}
