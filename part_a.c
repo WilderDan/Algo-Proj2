@@ -33,6 +33,7 @@ const int M_SIZES[] = {25, 50, 100};
 void demoMergeSort();
 void demoFileMerge();
 void sortThenMerge(int dest[], int srcA[], int sizeA, int srcB[], int sizeB);
+void appendThenSort(int dest[], int srcA[], int sizeA, int srcB[], int sizeB);
 void experiment(char *, void (*)(int [], int [], int, int [], int) );
  
 int main() {
@@ -43,7 +44,7 @@ int main() {
     demoFileMerge();
     
     experiment("Sort then Merge", sortThenMerge);
-    //experiment(appendThenSort);
+    experiment("Append then Sort", appendThenSort);
 
     return 0;
  }
@@ -115,6 +116,14 @@ void sortThenMerge(int dest[], int srcA[], int sizeA, int srcB[], int sizeB) {
     copyArray(dest, srcA, sizeA, 0);
     copyArray(dest, srcB, sizeB, sizeA);
     merge(dest, 0, sizeA - 1, sizeDest - 1);
+}
+
+void appendThenSort(int dest[], int srcA[], int sizeA, int srcB[], int sizeB) {
+    int sizeDest = sizeA + sizeB;
+    
+    copyArray(dest, srcA, sizeA, 0);
+    copyArray(dest, srcB, sizeB, sizeA);
+    mergeSort(dest, 0, sizeDest - 1);
 }
  
 void experiment(char *tag, void (*func)(int [], int [], int, int [], int)) {
