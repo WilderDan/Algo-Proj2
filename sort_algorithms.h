@@ -12,7 +12,8 @@
 #ifndef SORT_ALGORITHMS_H
 #define SORT_ALGORITHMS_H
 
+    void merge(int *arr, int lo, int mid, int hi);
     void mergeSort(int *arr, int lo, int hi);
     void quickSort(int *arr, int lo, int hi);
-
+    
 #endif

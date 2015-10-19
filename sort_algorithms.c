@@ -14,7 +14,6 @@
 #include <limits.h>
 
 void swap(int *x, int *y);
-void merge(int *arr, int lo, int mid, int hi);
 int  partition(int *arr, int lo, int hi);
 
 void mergeSort(int *arr, int lo, int hi) {

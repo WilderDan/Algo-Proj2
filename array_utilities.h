@@ -14,9 +14,9 @@
 
 #include <stdio.h>
 
-void fprintArray(FILE *, int [], int);
-void randomInitialize(int [], int, int, int);
-void copyArray(int [], int [], int);
-void readArrayFile(FILE *, int [], int);
+void fprintArray(FILE *stream, int arr[], int size);
+void randomInitialize(int arr[], int size, int min, int max);
+void copyArray(int dest[], int src[], int size, int start);
+void readArrayFile(FILE *stream, int dest[], int size);
 
 #endif

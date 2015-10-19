@@ -37,10 +37,12 @@ void randomInitialize(int arr[], int size, int minVal, int maxVal) {
     }
 }
 
-void copyArray(int dest[], int source[], int size) {
-    int i;
-    for (i = 0; i < size; ++i)
-        dest[i] = source[i];
+void copyArray(int dest[], int source[], int size, int start) {
+/* Copy the first size elements from source into dest[start...start + size - 1]
+ */
+    int i, j;
+    for (i = start, j = 0; i < start + size; ++i, ++j)
+        dest[i] = source[j];
 }
 
 void readArrayFile(FILE *stream, int arr[], int size) {

@@ -28,8 +28,13 @@ const int N_SIZES[] = {50, 250, 1250};
 const int M_SIZES[] = {25, 50, 100};
  
 int main() {
+    
+    const int SIZE_MERGE = SIZE_BIGGER + SIZE_SMALLER;
+    
     int A[SIZE_BIGGER];
     int B[SIZE_SMALLER];
+    int C[SIZE_MERGE];
+    
     FILE *fpBig;
     FILE *fpSmall;
     
@@ -47,23 +52,23 @@ int main() {
     // Erase current contents
     memset(A, 0, SIZE_BIGGER * sizeof(int));
     
-    // Retrieve larger array from file; ASSUME sorted
     fpBig = fopen(FILE_BIGGER, "r");
     if (fpBig == NULL) {
         fprintf(stderr, "Error opening file!\n");
         exit(1);
     }
     
+    // Retrieve larger array from file; ASSUME sorted
     readArrayFile(fpBig, A, SIZE_BIGGER);
     fclose(fpBig);
     
-    // Retrieve smaller array from file
     fpSmall = fopen(FILE_SMALLER, "r");
     if (fpSmall == NULL) {
         fprintf(stderr, "Error opening file!\n");
         exit(1);
     }
     
+    // Retrieve smaller array from file; ASSUME unsorted
     readArrayFile(fpSmall, B, SIZE_SMALLER);
     fclose(fpSmall);
     
@@ -72,6 +77,17 @@ int main() {
     
     printf("\nSmaller unsorted file contents:\n");
     fprintArray(stdout, B, SIZE_SMALLER);
+    
+    printf("\nSorted smaller file:\n");
+    mergeSort(B, 0, SIZE_SMALLER - 1);
+    fprintArray(stdout, B, SIZE_SMALLER);
+    
+    // A & B are sorted so Merge
+    copyArray(C, A, SIZE_BIGGER, 0);
+    copyArray(C, B, SIZE_SMALLER, SIZE_BIGGER);
+    merge(C, 0, SIZE_BIGGER - 1, SIZE_MERGE - 1);
+    printf("\nMerged file:\n");
+    fprintArray(stdout, C, SIZE_MERGE);
     
     return 0;
  }
