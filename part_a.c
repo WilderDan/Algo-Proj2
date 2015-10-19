@@ -6,27 +6,25 @@
  *  Project #2
  *
  *  part_a.c
- *      Program satisfying part A of project #2.
+ *      Program satisfying part A of project #2. 
  */
  
 #include "array_utilities.h"
 #include "sort_algorithms.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
- 
-// For use in random generation:
+
+// PARAMETERS 
+
 #define MIN_VAL             1
 #define MAX_VAL             9999
-
 #define SIZE_DEMO           100
-
 #define FILE_BIGGER         "bigger_file"
 #define SIZE_BIGGER         20
-
 #define FILE_SMALLER        "smaller_file"
 #define SIZE_SMALLER        10
- 
 #define NUM_TRIALS          10
 
 const int N_SIZES[] = {50, 250, 1250};
