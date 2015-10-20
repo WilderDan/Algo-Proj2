@@ -14,20 +14,7 @@
 #include <limits.h>
 
 void swap(int *x, int *y);
-int  partition(int *arr, int lo, int hi);
-
-void mergeSort(int *arr, int lo, int hi) {
-    int mid;
-    
-    if (lo < hi) {
-        mid = floor( (lo + hi) / 2 );
-        
-        mergeSort(arr, lo, mid);
-        mergeSort(arr, mid + 1, hi);
-        
-        merge(arr, lo, mid, hi);
-    }
-}
+int  partition(int *arr, int lo, int hi, int (*)(int *, int, int));
 
 void merge(int *arr, int lo, int mid, int hi) {
     int i, j, k;
@@ -63,20 +50,37 @@ void merge(int *arr, int lo, int mid, int hi) {
     }
 }
 
-void quickSort(int *arr, int lo, int hi) {
-    int p;
+void mergeSort(int *arr, int lo, int hi) {
+    int mid;
     
     if (lo < hi) {
-        p = partition(arr, lo, hi);
-        quickSort(arr, lo, p - 1);
-        quickSort(arr, p + 1, hi);
+        mid = floor( (lo + hi) / 2 );
+        
+        mergeSort(arr, lo, mid);
+        mergeSort(arr, mid + 1, hi);
+        
+        merge(arr, lo, mid, hi);
     }
 }
 
-int partition(int *arr, int lo, int hi) {
-    int pivot = arr[hi];
+void quickSort(int *arr, int lo, int hi, int (*select)(int *, int, int)) {
+    int p;
+    
+    if (lo < hi) {
+        p = partition(arr, lo, hi, select);
+        quickSort(arr, lo, p - 1, select);
+        quickSort(arr, p + 1, hi, select);
+    }
+}
+
+int partition(int *arr, int lo, int hi, int (*select)(int *, int, int)) {
+    int pivot, pivotIndex;
     int i = lo;
     int j;
+    
+    pivotIndex = (*select)(arr, lo, hi);
+    pivot = arr[pivotIndex];
+    swap(arr + pivotIndex, arr + hi);
     
     for(j = lo; j < hi; ++j) {
         if (arr[j] <= pivot) {
