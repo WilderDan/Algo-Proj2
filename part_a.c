@@ -27,7 +27,7 @@
 #define SIZE_SMALLER        10
 #define NUM_TRIALS          10
 
-const int N_SIZES[] = {50, 250, 1250};
+const int N_SIZES[] = {1000, 10000, 100000};
 const int M_SIZES[] = {25, 50, 100};
 
 void demoMergeSort();
