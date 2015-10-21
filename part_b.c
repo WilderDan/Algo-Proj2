@@ -28,15 +28,27 @@ int main() {
     int arr[DEMO_SIZE];
     
     srand(time(NULL));
+    
+    printf("Basic Selection:\n");
+    randomInitialize(arr, DEMO_SIZE, MIN_VAL, MAX_VAL);
+    quickSort(arr, 0, DEMO_SIZE - 1, basicSelect);
+    fprintArray(stdout, arr, DEMO_SIZE);
+
+    printf("Median of 3 Selection:\n");
     randomInitialize(arr, DEMO_SIZE, MIN_VAL, MAX_VAL);
     quickSort(arr, 0, DEMO_SIZE - 1, medianOfThreeSelect);
     fprintArray(stdout, arr, DEMO_SIZE);
 
+    printf("Median of 5 Selection:\n");
+    randomInitialize(arr, DEMO_SIZE, MIN_VAL, MAX_VAL);
+    quickSort(arr, 0, DEMO_SIZE - 1, medianOfFiveSelect);
+    fprintArray(stdout, arr, DEMO_SIZE);
+    
     return 0;
 }
 
 int basicSelect(int *arr, int lo, int hi) {
-    return hi - 1;
+    return hi;
 }
 
 int medianOfThreeSelect(int *arr, int lo, int hi) {
@@ -45,9 +57,24 @@ int medianOfThreeSelect(int *arr, int lo, int hi) {
     int space[3] = {arr[lo], arr[mid], arr[hi]};
     mergeSort(space, 0, 2);
     
-    return (space[1] == arr[lo]) ? lo : ((space[1] == arr[mid]) ? mid : hi); 
+    return space[1] == arr[lo] ? lo : (space[1] == arr[mid] ? mid : hi); 
 }
 
 int medianOfFiveSelect(int *arr, int lo, int hi) {
-   return -1; 
+    int space[5];
+    int in[5];
+    int i;
+   
+    for (i = 0; i < 5; ++i) { 
+        in[i] = (rand() % (hi-lo)) + lo;
+        space[i] = arr[in[i]];
+    }
+
+    mergeSort(space, 0, 4);
+    
+    for (i = 0; i < 5; ++i)
+        if (space[2] == arr[in[i]])
+            return in[i];
+            
+    return -1;
 }
