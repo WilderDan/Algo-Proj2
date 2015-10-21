@@ -17,17 +17,22 @@
 
 #define MIN_VAL             1
 #define MAX_VAL             9999
-#define DEMO_SIZE           100
+#define DEMO_SIZE           50
 #define NUM_TRIALS          10
+
+const int SIZES[] = {1000, 10000, 100000};
 
 int basicSelect(int *arr, int lo, int hi);
 int medianOfThreeSelect(int *arr, int lo, int hi);
 int medianOfFiveSelect(int *arr, int lo, int hi);
+void experiment(char *tag, int (*select)(int *, int, int));
 
 int main() {
     int arr[DEMO_SIZE];
-    
+
     srand(time(NULL));
+    
+    printf("Randomly Initializing arrays...\n");
     
     printf("Basic Selection:\n");
     randomInitialize(arr, DEMO_SIZE, MIN_VAL, MAX_VAL);
@@ -43,6 +48,10 @@ int main() {
     randomInitialize(arr, DEMO_SIZE, MIN_VAL, MAX_VAL);
     quickSort(arr, 0, DEMO_SIZE - 1, medianOfFiveSelect);
     fprintArray(stdout, arr, DEMO_SIZE);
+    
+    experiment("Basic Selection", basicSelect);
+    experiment("Median of Three", medianOfThreeSelect);
+    experiment("Median of Five", medianOfFiveSelect);
     
     return 0;
 }
@@ -77,4 +86,42 @@ int medianOfFiveSelect(int *arr, int lo, int hi) {
             return in[i];
             
     return -1;
+}
+
+void experiment(char *tag, int (*select)(int *, int, int)) {
+    int *A[NUM_TRIALS];
+    int numSizes = sizeof(SIZES)/sizeof(SIZES[0]);
+    int i, k;
+    
+    clock_t start, end;
+    double average;
+    
+    printf("\nSelection method = %s", tag);
+    
+    for(i = 0; i < numSizes; ++i) {
+        
+        // Allocate
+        for (k = 0; k < NUM_TRIALS; ++k) {
+            A[k] = (int *) malloc(SIZES[i] * sizeof(int));
+            randomInitialize(A[k], SIZES[i], MIN_VAL, MAX_VAL);
+        }        
+        
+        start = clock();
+        
+        for (k = 0; k < NUM_TRIALS; ++k) {
+            quickSort(A[k], 0, SIZES[i] - 1, select);
+        }
+            
+        // Stop timer and get average time   
+        end = clock();
+        average = ((end - start) / (double) CLOCKS_PER_SEC) / NUM_TRIALS;
+        
+        // Free memory
+        for (k = 0; k < NUM_TRIALS; ++k)
+            free(A[k]);
+              
+        // Print results
+        printf("\n\tArray size %d:\n", SIZES[i]);
+        printf("\t\tAverage CPU execution time: %lf msecs\n", average*1000);
+    }
 }
