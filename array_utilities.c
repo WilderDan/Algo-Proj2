@@ -32,7 +32,7 @@ void randomInitialize(int arr[], int size, int minVal, int maxVal) {
     int i, randomInt;
    
     for (i = 0; i < size; i++) {
-        randomInt = (rand() % maxVal-minVal) + minVal;
+        randomInt = rand() % (maxVal-minVal) + minVal;
         arr[i] = randomInt;
     }
 }
