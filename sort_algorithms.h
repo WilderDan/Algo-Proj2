@@ -15,5 +15,6 @@
     void merge(int *arr, int lo, int mid, int hi);
     void mergeSort(int *arr, int lo, int hi);
     void quickSort(int *arr, int lo, int hi, int (*choose)(int *, int, int));
+    void insertionSort(int *arr, int size);
     
 #endif
