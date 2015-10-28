@@ -14,7 +14,10 @@
 #include <limits.h>
 
 void swap(int *x, int *y);
-int  partition(int *arr, int lo, int hi, int (*)(int *, int, int));
+void maxHeapify(int *arr, int size, int i);
+int partition(int *arr, int lo, int hi, int (*)(int *, int, int));
+int leftChild(int i);
+int rightChild(int i);
 
 void merge(int *arr, int lo, int mid, int hi) {
     int i, j, k;
@@ -110,4 +113,46 @@ void insertionSort(int *arr, int size) {
             --j;
         }
     }
+}
+
+void heapSort(int *arr, int size) {
+    int i;
+    int length = size - 1;
+    
+    buildMaxHeap(arr, size);
+    for (i  = length; i >= 1; --i) {
+        swap(arr, arr + i);
+        --length;
+        maxHeapify(arr, length, 0);
+    }
+}
+
+void buildMaxHeap(int *arr, int size) {
+    int i;
+    
+    for (i = (size-1)/2; i >= 0; --i)
+        maxHeapify(arr, size, i);
+}
+
+void maxHeapify(int *arr, int size, int i) {
+    int left = leftChild(i);
+    int right = rightChild(i);
+    int largest;
+    
+    largest = (left < size && arr[left] > arr[i]) ? left : i;
+    largest = (right < size && arr[right] > arr[largest]) ? right : largest;
+    
+    if (largest != i) {
+        swap(arr + i, arr + largest);
+        maxHeapify(arr, size, largest);
+    }
+        
+}
+
+int leftChild(int i) {
+    return 2*i + 1;
+}
+
+int rightChild(int i) {
+    return 2*i + 2;
 }

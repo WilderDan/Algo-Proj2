@@ -16,5 +16,7 @@
     void mergeSort(int *arr, int lo, int hi);
     void quickSort(int *arr, int lo, int hi, int (*choose)(int *, int, int));
     void insertionSort(int *arr, int size);
+    void buildMaxHeap(int *arr, int size);
+    void heapSort(int *arr, int size);
     
 #endif
